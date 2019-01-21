@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    {% block data %}{% endblock %}
+    <title>SongCloud</title>
+    {% load static %}
+    <link href="{% static 'songcloud/bootstrap.css' %}" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Electrolize" rel="stylesheet">
+    {% block js %}{% endblock %}
+</head>
+
+<body background="/static/songcloud/images/d2.png" style="background-size:cover; font-family: 'Electrolize', sans-serif;">
+<div id="header" class="bg-BENIKABA text-left to-top">
+    <h1>&nbsp;SongCloud</h1>
+</div>
+<div class="row">
+    <div id="navbar" class="col-md-3">
+        <div class="dropdown dropright">
+            <button type="button" class="dropdown-toggle nav-buttom" data-toggle="dropdown">
+                Playlist
+            </button>
+            <div class="dropdown-menu">
+                {% for playlist in request.user.playlist_set.all%}
+                <a class="dropdown-item" href="{% url 'playlist' playlist.id%}"> playlist: {{playlist.name}} </a>
+                {% endfor %}
+                <a class="dropdown-item" href="{% url 'create_playlist' %}">Add playlist</a>
+            </div>
+        </div>
+        <div class="dropdown dropright">
+            <button type="button" class="dropdown-toggle nav-buttom" data-toggle="dropdown">
+                Room
+            </button>
+            <div class="dropdown-menu dropdown dropright" >
+                <a type="button" class="dropdown-toggle dropdown-item" data-toggle="dropdown">
+                    Create Room
+                </a>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" href="{% url 'real_room_create' %}">Create Real Room</a>
+                    <a class="dropdown-item" href="{% url 'virtual_room_create' %}">Create Virtual Room</a>
+                </div>
+                <a class="dropdown-item" href="{% url 'virtual_room_enter' %}">Enter Room</a>
+
+                <a class="dropdown-item" href="{% url 'home' request.user.id %}">Current Room</a>
+
+            </div>
+            <a href="{% url 'profile' request.user.id %}"><button type="button" class="nav-buttom">
+                Profile
+            </button></a>
+
+            <a href="{% url 'logout' %}"><button type="button" class="nav-buttom">
+                Logout
+            </button></a>
+        </div>
+    </div><!--row1-->
+    {% block content %}{% endblock %}
+</div>
+<br>
+{% block map %}{% endblock %}
+</body>
+</html>

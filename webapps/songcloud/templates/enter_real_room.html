@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% load static %}
+{% block js %}
+    <script src="{% static 'songcloud/js/map.js' %}"></script>
+    <script async defer
+  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD4jYavowAigT_V7dgLh1-qKTyXyTcdXS0&libraries=geometry">
+</script>
+    <style>
+      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+      #map {
+        height: 100%;
+      }
+      /* Optional: Makes the sample page fill the window. */
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+{% endblock %}
+{% block content %}
+    <div id="container" class="col-md-7">
+        <ul class="nav nav-tabs" style="margin-left: 15px">
+            <li role="presentation"><a href="{% url 'virtual_room_enter' %}">Virtual Room</a></li>
+            <li role="presentation" class="active"><a href="{% url 'real_room_enter' %}">Real Room</a></li>
+        </ul>
+        <div class="bg-grey round1" style="margin-top: -20px">
+            <h1 class="text-center">Enter Real Room</h1>
+            {% for error in errors %}
+            <p style="color:red">
+            {{error}}
+            </p>
+            {% endfor %}
+            <div class="row">
+                <div class="col-md-5 col-md-offset-1">
+                    <h3>Your nearby rooms:</h3>
+                    <button id="search-real-room-button" class="btn btn-success">search for real room</button>
+                <hr>
+                </div>
+            </div>
+            <div class="row" id="position">
+
+                <div class="col-md-5 col-lg-offset-1">
+                    <div id="real_room1" style="background-color: white">
+                        <div class="row" style="height: 50px">
+                            <div class="col-md-8 col-lg-offset-1">
+                                <h4 id="real-room-name"></h4>
+                            </div>
+                            <div style="margin-top: 5px">
+                                <button class="btn btn-success center-block" id="joinBtn"> join </button>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-9 col-lg-offset-1">
+                                <!--<label>Distance</label>-->
+                                <!--<output style="margin-top: -10px">approximately 200m</output>-->
+                                <label>Location</label>
+                                <output style="margin-top: -10px" id="real-room-location"></output>
+                                <label>Introduction</label>
+                                <output style="margin-top: -10px" id="real-room-introduction"></output>
+                                <label>Distance</label>
+                                <output style="margin-top: -10px" name="distance" id="real-room-distance" value=""></output>
+
+                                <br>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br>
+        </div>
+
+    </div>
+{% endblock %}
+{% block map %}
+<br>
+<br>
+<br>
+<div id="map"></div>
+{% endblock %}

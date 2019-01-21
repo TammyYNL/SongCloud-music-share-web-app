@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+    <div id="container" class="col-md-7 bg-grey round1">
+        <h1 class="text-center">Edit Profile</h1>
+        <form enctype="multipart/form-data" method="post" class="col-md-offset-3 col-md-6" action="{% url 'edit_confirmation' %}">
+			<div class="row">
+                <div class="col-md-6 form-group">
+                    <label for="inputFirstName">First Name</label>
+                    <input id="inputFirstName" class="form-control" value="{{request.user.first_name}}" name="first_name" placeholder="First Name" required autofocus>
+                </div>
+				<div class="col-md-6 form-group">
+                    <label for="inputLastName">Last Name</label>
+                    <input id="inputLastName" class="form-control" value="{{request.user.last_name}}" name="last_name" placeholder="Last Name" required >
+                </div>
+			</div>
+           <div class="form-group">
+                <label for="styleTag">Style Tag</label>
+                <select class="form-control" id="styleTag" name="style_tag">
+                    <option value="no style">no style</option>
+                    <option value="jazz">jazz</option>
+                    <option value="classical">classical</option>
+                    <option value="hip-hop">hip-hop</option>
+                    <option value="r&b">r&b</option>
+                    <option value="punk">punk</option>
+                    <option value="rock">rock</option>
+                    <option value="blues">blues</option>
+                    <option value="electrical">electrical</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="inputBio">Bio</label>
+                <textarea rows="3" id="inputBio" class="form-control"  name="bio" placeholder="Short Bio">{{profile.bio}}</textarea>
+            </div>
+             <div class="form-group">
+                <label for="inputPicture">Profile Picture</label>
+                <input type="file" id="inputPicture" class="form-control" name="picture" placeholder="Profile Picture">
+            </div>
+			<div class="row">
+				<div class="col-md-3">
+                    <a href="{% url 'home' current_user.id %}"><button class="btn btn-primary" type="button">Back to Homepage</button></a>
+				</div>
+                <div class="col-md-offset-5 col-md-4">
+                    <input class="btn btn-success btn-block" type="submit" value="Submit">
+                </div>
+			</div>
+            <br>
+			{% csrf_token %}
+		</form>
+        <br>
+    </div>
+{% endblock %}

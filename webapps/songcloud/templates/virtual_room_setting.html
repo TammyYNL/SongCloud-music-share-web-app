@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+    <div id="container" class="col-md-7 bg-grey round1">
+        <h1 class="text-center">Virtual Room Setting</h1>
+        <form class="col-md-offset-3 col-md-6" action="{% url 'virtual_room_setting' %}" method="post">
+            <!--room name-->
+            {% for error in errors %}
+            <p class="red">
+            {{error}}
+            </p>
+            {% endfor %}
+
+            <!--style tag-->
+            <div class="form-group">
+                <label for="styleTag">Style Tag</label>
+                <select class="form-control" id="styleTag" name="style_tag">
+                    <option>no style</option>
+                    <option>jazz</option>
+                    <option>classical</option>
+                    <option>hip-hop</option>
+                    <option>r&b</option>
+                    <option>punk</option>
+                    <option>rock</option>
+                    <option>blues</option>
+                    <option>electrical</option>
+                </select>
+            </div>
+            <!--playlist settings-->
+            <div class="form-group">
+                <label>Playlist Settings</label>
+                <div class="radio">
+                    <label>
+                        <input type="radio" name="playlist_settings" id="default" value="0" checked>
+                        Default
+                    </label>
+                </div>
+                <div class="radio">
+                    <label>
+                        <input type="radio" name="playlist_settings" id="round_robin" value="1">
+                        Round Robin
+                    </label>
+                </div>
+                <div class="radio">
+                    <label>
+                        <input type="radio" name="playlist_settings" id="vote" value="2">
+                        Vote
+                    </label>
+                </div>
+            </div>
+            <!--default playlist-->
+            <div class="form-group">
+                <label for="defaultPlaylist">Default Playlist</label>
+                <select class="form-control" id="defaultPlaylist" name="default_playlist">
+                    <option>list1</option>
+                    <option>list2</option>
+                    <option>list3</option>
+                    <option>list4</option>
+                    <option>list5</option>
+                </select>
+            </div>
+            <!--room mode-->
+            <div class="form-group">
+                <label>Room Mode</label>
+                <div class="radio">
+                    <label>
+                        <input type="radio" name="room_mode" id="private" value="0" checked>
+                        Private
+                    </label>
+                </div>
+                <div class="radio">
+                    <label>
+                        <input type="radio" name="room_mode" id="public" value="1">
+                        Public
+                    </label>
+                </div>
+            </div>
+            <!--member number-->
+            <div class="form-group">
+                <label>Limited Member Number</label>
+                <div class="radio">
+                    <label>
+                        <input type="radio" name="member_number" id="number_10" value="10" checked>
+                        10
+                    </label>
+                </div>
+                <div class="radio">
+                    <label>
+                        <input type="radio" name="member_number" id="number_20" value="20">
+                        20
+                    </label>
+                </div>
+                <div class="radio">
+                    <label>
+                        <input type="radio" name="member_number" id="number_50" value="30">
+                        50
+                    </label>
+                </div>
+            </div>
+            <!--introduction-->
+            <div class="form-group">
+                <label for="inputIntroduction">Introduction</label>
+                <textarea rows="3" id="inputIntroduction" class="form-control"  name="introduction" placeholder="Introduction"></textarea>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <a href="{% url 'home' current_user.id %}"><button class="btn btn-primary" type="button">Cancel</button></a>
+                </div>
+                <div class="col-md-offset-5 col-md-4">
+                    <input class="btn btn-success btn-block" type="submit" value="Confirm">
+                </div>
+            </div>
+            <br>
+            {% csrf_token %}
+        </form>
+    </div>
+{% endblock %}
+<br>

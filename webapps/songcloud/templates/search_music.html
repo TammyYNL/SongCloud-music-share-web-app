@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% load static %}
+{% block data %}
+    <!-- meta data for Apple MusicKit-->
+    <meta name="apple-music-developer-token" content="eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IjNTSzlRQzdRVE4ifQ.eyJpYXQiOjE1MjgyNDE0MzEsImV4cCI6MTU0Mzc5MzQzMSwiaXNzIjoiVUM5REc5Mko2SiJ9.vAiX38WqbW_CAGr296-EQntZU8HcLq0MLg0f7P8i-STa9Oy5LgaTxbDCSlD9vZk2uzpJP6kRcH-YomqTmmLS9A">
+    <meta name="apple-music-app-name" content="SongCloud">
+    <meta name="apple-music-app-build" content="1.0">
+{% endblock %}
+{% block js %}
+    <!-- MusicKit JS -->
+    <script src='https://js-cdn.music.apple.com/musickit/v1/musickit.js'></script>
+
+    <!-- JS for searching music -->
+    <script src="{% static 'songcloud/js/searchMusic.js' %}"></script>
+{% endblock %}
+{% block content %}
+    <div id="container" class="col-md-6 bg-grey round1">
+        <h1 class="invisible" id="helperId">{{id}}</h1>
+        <h1 class="invisible" id="helperType">{{type}}</h1>
+        <h1 class="text-center">Search Music</h1>
+        <div class="row">
+            <div class="form-group col-lg-offset-3 col-md-5">
+                <input type="text" class="form-control" placeholder="Search" id="searchContent">
+            </div>
+            <div class="col-md-4">
+                <button type="submit" class="btn btn-default" aria-label="Left Align" id="searchBtn">
+                    <span class="glyphicon glyphicon-search" aria-label= "search" aria-hidden="true"></span>
+                </button>
+            </div>
+        </div>
+        <div id="playlist">
+            <ul class="list-group" id="searchResult">
+            </ul>
+        </div>
+        <div class="row">
+            <div class="col-md-offset-5 col-md-2">
+                {% if type == "playlist" %}
+                    <a href="{% url 'playlist' id%}"><button class="btn btn-success" type="button">Done</button></a>
+                {% elif type == "virtual_room" %}
+                    <a href="{% url 'virtual_room' id%}"><button class="btn btn-success" type="button">Done</button></a>
+                {% else %}
+                    <a href="{% url 'real_room' id%}"><button class="btn btn-success" type="button">Done</button></a>
+                {% endif %}
+            </div>
+        </div>
+        <br>
+    </div>
+{% endblock %}

@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+    <div id="container" class="col-md-7 bg-grey round1">
+        <h1 class="text-center">Add Playlist</h1>
+        <form class="col-md-offset-3 col-md-6" enctype="multipart/form-data" method="post">
+            {% for field in form %}
+            <div class="form-group">
+            {{ field.errors }}
+            {{ field.label_tag }}
+            {{ field }}
+            </div>
+            {% endfor %}
+            <div class="row">
+                <div class="col-md-3">
+
+                    <a href="{% url 'home' current_user.id %}"><button class="btn btn-primary" type="button">Cancel</button></a>
+
+                </div>
+                <div class="col-md-offset-5 col-md-4">
+                    <input class="btn btn-success btn-block" type="submit" value="Confirm">
+                </div>
+            </div>
+            <br>
+            {% csrf_token %}
+        </form>
+    </div>
+{% endblock %}

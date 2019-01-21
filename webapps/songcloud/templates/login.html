@@ -1,0 +1,47 @@
+{% extends "base_sign.html" %}
+{% load static %}
+{% block content %}
+<div class="row">
+    <div class="col-md-4"><p>&nbsp;</p></div>
+    <div id="container" class="col-md-4 bg-peach round1">
+        <div id="content" >
+            <h3 class="text-center"><b>Log In</b></h3>
+            <div class="blank">&nbsp;</div>
+            {% if errors %}
+	        <p class="red">
+		    {{ errors }}
+	        </p>
+	        {% endif %}
+            <form id="login-form" action="{% url 'login' %}"method="post">
+            {{ loginform }}
+            {% csrf_token %}
+
+                <div id="main" class="text-center">
+                    <a href="{% url 'password_reset_form' %}">Forgot password?</a>
+                </div>
+                <div class="blank">&nbsp;</div>
+                <div class="row">
+                    <div class="col-md-1">&nbsp;</div>
+                    <div class="col-md-5">
+                        <div id="button1" class="text-center">
+                            <a href="{% url 'register' %}"><button class="btn btn-primary" type="button">Create New Account</button></a>
+                        </div>
+                    </div>
+                    <div class="col-md-2">&nbsp;</div>
+                    <div class="col-md-3">
+                        <div id="button2" class="text-center">
+                            <input value="Log In" class="btn btn-success" type="submit">
+                        </div>
+                    </div>
+                </div>
+                 </form>
+
+                <div>&nbsp;</div>
+            <div id="footer" class="text-center">
+                Copyright 2018 SongCloud.
+            </div>
+            <div>&nbsp;</div>
+        </div>
+    </div>
+</div>
+{% endblock %}

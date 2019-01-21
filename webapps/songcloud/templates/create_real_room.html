@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% load static %}
+{% block js %}
+    <script src="{% static 'songcloud/js/map.js' %}"></script>
+    <script async defer
+  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD4jYavowAigT_V7dgLh1-qKTyXyTcdXS0">
+</script>
+{% endblock %}
+{% block content %}
+    <div id="container" class="col-md-7 bg-grey round1">
+        <h1 class="text-center">Create Real Room</h1>
+        <!--form-->
+        <form class="col-md-offset-2 col-md-8" action="{% url 'create_real_room' %}" method="post">
+            {% for error in errors %}
+            <p class="red">
+            {{error}}
+            </p>
+            {% endfor %}
+            <div class="form-group">
+                <label for="roomName">Name</label>
+                <input id="roomName" class="form-control" name="room_name" placeholder="Room Name" required autofocus>
+            </div>
+            <div class="form-group">
+                <label for="location">Location</label>
+                <div class="row">
+                    <div class="col-md-11">
+                        <output id="location" class="form-control" name="location"></output>
+                    </div>
+                    <div>
+                        <button id="locate-button" type="button" class="round1 bg-BENIKABA">
+                            <span><i class="glyphicon glyphicon-map-marker" ></i></span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="playlist">Playlist</label>
+                <select class="form-control" id="playlist" name="playlist">
+                    {% for playlist in request.user.playlist_set.all%}
+                    <option># {{playlist.id}} {{playlist.name}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="inputIntroduction">Introduction</label>
+                <textarea rows="3" id="inputIntroduction" class="form-control"  name="introduction" placeholder="Introduction"></textarea>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <a href="{% url 'home' current_user.id %}"><button class="btn btn-primary" type="button">Cancel</button></a>
+                </div>
+                <div class="col-md-offset-6 col-md-3">
+                    <button id="create-real-room-button" class="btn btn-success btn-block" type="submit" value="Confirm">Confirm</button>
+                </div>
+            </div>
+            <input class="latitude" type="hidden" id="latitude" name="latitude" value="{{ latitude }}">
+            <input class="longtitude" type="hidden" id="longtitude" name="longtitude" value="{{ longtitude }}">
+            <br>
+            {% csrf_token %}
+        </form>
+    </div>
+{% endblock %}

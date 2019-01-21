@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+    <div id="container" class="col-md-7 bg-grey round1">
+        <h1 class="text-center">{{playlist.name}}</h1>
+        <div class="row">
+            <div id="playlist_image" class="col-md-4">
+                <img src="{% url 'pl_photo' playlist.id%}" width="200" style="margin-left: 30px">
+            </div>
+            <div id="list_info">
+                <h3>{{playlist.date}}</h3>
+                <h4>{{playlist.description}}</h4>
+            </div>
+        </div>
+        <br>
+        <div>
+            <div id="playlist" style="margin-left: 13px" class="col-md-12" >
+                <ul class="list-group" >
+                    {% for song in playlist.songs.all %}
+                    <li class="list-group-item1" style="background-color: white">
+                        <span>{{song}}</span>
+                        <button class="badge minus">
+                            <span ><i class="glyphicon glyphicon-minus"></i></span>
+                        </button>
+                    </li>
+                    {% endfor %}
+                    <li class="list-group-item1" style="background-color: white">
+                        <button class="center-block plus bg-BENIKABA" type="submit" form="hide">
+                            <span><i class="glyphicon glyphicon glyphicon-plus"></i></span>
+                        </button>
+                        <form method="post" action="{% url 'search_music' %}" id="hide">
+                            <input type="hidden" name="type" value="playlist">
+                            <input type="hidden" name="id" value={{playlist.id}}>
+                        </form>
+                    </li>
+                </ul>
+
+            </div>
+        </div>
+    </div>
+{% endblock %}

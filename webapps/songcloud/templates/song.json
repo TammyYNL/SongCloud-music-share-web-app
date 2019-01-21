@@ -1,0 +1,5 @@
+{
+  "idInRoom": {{song.idInRoom}},
+  "vote": {{song.vote}},
+  "info": "{{song.song}}"
+}

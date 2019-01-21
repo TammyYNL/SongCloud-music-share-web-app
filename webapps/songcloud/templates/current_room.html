@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- meta data for Apple MusicKit-->
+    <meta name="apple-music-developer-token" content="eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IjNTSzlRQzdRVE4ifQ.eyJpYXQiOjE1MjgyNDE0MzEsImV4cCI6MTU0Mzc5MzQzMSwiaXNzIjoiVUM5REc5Mko2SiJ9.vAiX38WqbW_CAGr296-EQntZU8HcLq0MLg0f7P8i-STa9Oy5LgaTxbDCSlD9vZk2uzpJP6kRcH-YomqTmmLS9A">
+    <meta name="apple-music-app-name" content="SongCloud">
+    <meta name="apple-music-app-build" content="1.0">
+
+    <title>SongCloud</title>
+    {% load static %}
+    <link href="{% static 'songcloud/bootstrap.css' %}" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Electrolize" rel="stylesheet">
+
+    <!-- MusicKit JS -->
+    <script src='https://js-cdn.music.apple.com/musickit/v1/musickit.js'></script>
+
+    <!-- JS for music player control -->
+    <script src="{% static 'songcloud/js/musicPlayer.js' %}"></script>
+</head>
+<body background="/static/songcloud/images/d2.png" style="background-size:cover; font-family: 'Electrolize', sans-serif;">
+<div id="header" class="bg-BENIKABA text-left to-top">
+    <h1>&nbsp;SongCloud</h1>
+</div>
+<div class="row">
+    <div id="navbar" class="col-md-2">
+        <div class="dropdown dropright">
+            <button type="button" class="dropdown-toggle nav-buttom" data-toggle="dropdown">
+                Playlist
+            </button>
+            <div class="dropdown-menu">
+                {% for playlist in request.user.playlist_set.all%}
+                <a class="dropdown-item" href="{% url 'playlist' playlist.id%}"> playlist: {{playlist.name}} </a>
+                {% endfor %}
+                <a class="dropdown-item" href="{% url 'create_playlist' %}">Add List</a>
+            </div>
+        </div>
+        <div class="dropdown dropright">
+            <button type="button" class="dropdown-toggle nav-buttom" data-toggle="dropdown">
+                Room
+            </button>
+            <div class="dropdown-menu dropdown dropright" >
+                <a type="button" class="dropdown-toggle dropdown-item" data-toggle="dropdown">
+                    Create Room
+                </a>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" href="{% url 'real_room_create' %}">Create Real Room</a>
+                    <a class="dropdown-item" href="{% url 'virtual_room_create' %}">Create Virtual Room</a>
+                </div>
+                <a class="dropdown-item" href="{% url 'virtual_room_enter' %}">Enter Room</a>
+                <a class="dropdown-item active" href="{% url 'home' request.user.id %}">Current Room</a>
+            </div>
+            <a href="{% url 'profile' request.user.id %}"><button type="button" class="nav-buttom">
+                Profile
+            </button></a>
+
+            <a href="{% url 'logout' %}"><button type="button" class="nav-buttom">
+                Logout
+            </button></a>
+        </div>
+    </div><!--row1-->
+
+    {% if room %}
+    <div id="container" class="col-md-6 bg-grey round1">
+        {% for error in errors %}
+            <p style="color:red">
+            {{error}}
+            </p>
+            {% endfor %}
+
+        <div class="row">
+            <div class="col-md-6">
+                <h1>Current room:</h1>
+                <h1>#<span id="roomId">{{room.id}}</span> {{ room.name }}</h1>
+                <span class="invisible" id="songId"> {{room.currentSong}} </span>
+                <span class="invisible" id="roomType"> {{profile.roomtype}} </span>
+            </div>
+            <div class= "col-md-6">
+                {% if request.user == room.admin %}
+                    <button class="start_btn" id="startBtnAdmin">Start</button>
+                {% else %}
+                    <button class="start_btn" id="startBtnNormal">Start</button>
+                {% endif %}
+
+                <a href="{% url 'leave_room' room.id %}"><button class="leave_btn">Leave</button></a>
+
+                {% if current_user == room.admin %}
+                {% if profile.roomtype == 2 %}
+                <a href="{% url 'real_room_setting' %}"><button class="settings_btn">Settings</button></a>
+                {% elif profile.roomtype == 1 %}
+                <a href="{% url 'virtual_room_setting' %}"><button class="settings_btn">Settings</button></a>
+                {% endif %}
+                {% endif %}
+
+            </div>
+
+        </div>
+        <div id="member">
+            <table>
+                <tr>
+                    {% for profile in profiles %}
+                    <td class="td1"><img src="{% url 'photo' profile.id %}" name="profile_picture" class="img-circle center-block" width="50"></td>
+                    {% endfor %}
+                </tr>
+                <tr>
+                    {% for profile in profiles %}
+                    <td class="text-center">{{ profile.user.username }}</td>
+                    {% endfor %}
+                </tr>
+
+                <!--<tr>-->
+                    <!--<td class="td1"><img src="{% static 'songcloud/images/1.png' %}" name="profile_picture" class="img-circle center-block" width="50"></td>-->
+                    <!--<td class="td1"><img src="{% static 'songcloud/images/1.png' %}" name="profile_picture" class="img-circle center-block" width="50"></td>-->
+                    <!--<td class="td1"><img src="{% static 'songcloud/images/1.png' %}" name="profile_picture" class="img-circle center-block" width="50"></td>-->
+                    <!--<td class="td1"><img src="{% static 'songcloud/images/1.png' %}" name="profile_picture" class="img-circle center-block" width="50"></td>-->
+                    <!--<td class="td1"><img src="{% static 'songcloud/images/1.png' %}" name="profile_picture" class="img-circle center-block" width="50"></td>-->
+                    <!--<td class="td1"><img src="{% static 'songcloud/images/1.png' %}" name="profile_picture" class="img-circle center-block" width="50"></td>-->
+                    <!--<td class="td1"><img src="{% static 'songcloud/images/1.png' %}" name="profile_picture" class="img-circle center-block" width="50"></td>-->
+                <!--</tr>-->
+                <!--<tr>-->
+                    <!--<td class="text-center">name1</td>-->
+                    <!--<td class="text-center">name2</td>-->
+                    <!--<td class="text-center">name3</td>-->
+                    <!--<td class="text-center">name4</td>-->
+                    <!--<td class="text-center">name5</td>-->
+                    <!--<td class="text-center">name6</td>-->
+                    <!--<td class="text-center">name7</td>-->
+                <!--</tr>-->
+            </table>
+        </div>
+        <div class="song-info" style=" margin-top: 100px">
+            <p id="now-playing"></p>
+            <!-- <button data-apple-music-set-queue="pl.d133de76fb4f4ccf98846231899874c0" data-apple-music-autoplay="true">Start</button> -->
+            <!-- <button data-apple-music-set-queue="1025210938" data-apple-music-autoplay="true">Start</button> -->
+            <!-- <button data-apple-music-pause>Pause</button> -->
+            <!-- <button data-apple-music-play>Play</button> -->
+            <button data-apple-music-skip-to-previous-item class="invisible">Previous</button>
+            <button data-apple-music-skip-to-next-item class="invisible" id="next">Next</button>
+        </div>
+        <div class="audioplayer">
+            <div>
+                <div data-apple-music-pause class="audioplayer-playpause2 invisible">
+                    <a>&nbsp;</a>
+                </div>
+                <div data-apple-music-play class="audioplayer-playpause invisible">
+                    <a>Play</a>
+                </div>
+
+            </div>
+            <div class="audioplayer-time audioplayer-time-current" id="time"></div>
+            <div class="audioplayer-bar">
+                <div class="audioplayer-bar-loaded" style="width: 100%"></div>
+                <div class="audioplayer-bar-played" id="progress" style="width: 0%"></div>
+            </div>
+            <div class="audioplayer-time audioplayer-time-duration"><time id="apple-music-current-playback-duration"></time></div>
+            <div class="audioplayer-volume">
+                <div class="audioplayer-volume-button invisible" title="Volume">
+                    <a href="#">Volume</a>
+                </div>
+                <div class="audioplayer-volume-adjust">
+                    <div>
+                        <div style="height: 100%;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-md-3">&nbsp;</div>
+            <div class="col-md-4">
+                <button class="social-like" id="like-button">
+                    <span class="like"><i class="glyphicon glyphicon-thumbs-up" ></i></span>
+                    <span class="count" id="countlike" name="count_like">0</span>
+                </button>
+            </div>
+            <div class="col-md-4">
+                <button class="social-dislike" id="dislike-button">
+                <span class="like"><i class="glyphicon glyphicon-thumbs-down"></i></span>
+                    <span class="count" id="countdislike" >0</span>
+                </button>
+            </div>
+        </div>
+        <br>
+    </div><!--row2-->
+
+
+    <div id="playlist" class="col-md-4">
+        <ul class="nav nav-tabs">
+            <li role="presentation" class="active"><a href="#">Current</a></li>
+            <li role="presentation"><a href="#">Added</a></li>
+            <li role="presentation"><a href="#">History</a></li>
+        </ul>
+		
+		<ul class="list-group songs">
+            <div id="curPlaylist">
+            {% for songInRoom in room.roomSongs.all %}
+            <li class="list-group-item1 lightgrey">
+                <span>{{songInRoom.song}}</span>
+            </li>
+            {% endfor %}
+            </div>
+            <li class="list-group-item1 lightgrey">
+                <button class="center-block plus bg-BENIKABA" type="submit" form="hide">
+                    <span><i class="glyphicon glyphicon glyphicon-plus"></i></span>
+                </button>
+                <form method="post" action="{% url 'search_music' %}" id="hide">
+                    {% if profile.roomtype == 2 %}
+                        <input type="hidden" name="type" value="real_room">
+                    {% elif profile.roomtype == 1 %}
+                        <input type="hidden" name="type" value="virtual_room">
+                    {% endif %}
+                    <input type="hidden" name="id" value="{{room.id}}">
+                </form>
+            </li>
+        </ul>
+	   
+    </div>
+    {% else %}
+    <div class="col-md-offset-1 col-md-6 bg-grey round1" style="margin-top: 50px">
+        <div class="row">
+            <div class="col-md-12 text-center"><h2>You are not in any rooms</h2></div></div>
+            <div class= "col-md-4 col-md-offset-4">
+                <a href="{% url 'virtual_room_enter' %}"><button class="btn btn-success btn-block center-block" type="submit">Join one</button></a>
+                <br>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+</div>
+</body>
+</html>
+

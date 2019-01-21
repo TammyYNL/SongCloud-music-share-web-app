@@ -1,0 +1,7 @@
+{
+  "id": "{{real_room.id}}",
+  "name": "{{real_room.name}}",
+  "description":  "{{real_room.description}}",
+  "latitude" : {{real_room.latitude}},
+  "longtitude" : {{real_room.longtitude}}
+}

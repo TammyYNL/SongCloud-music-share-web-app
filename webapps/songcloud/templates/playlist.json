@@ -1,0 +1,1 @@
+{"songs":[{% for song in songs %}{%spaceless%}{% include 'song.json' %}{%endspaceless%}{% if not forloop.last %}, {% endif %}{% endfor %}]}

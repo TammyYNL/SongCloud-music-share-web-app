@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+    <div id="container" class="col-md-7 bg-grey round1">
+        <h1 class="text-center">Profile</h1>
+        <img src="{% url 'photo' profile.id%}" id="profile_picture" class="img-circle center-block" width="160">
+        <P class="blank"></P>
+        <p class="text-center"><b>{{ request.user.username }}</b></p>
+        <P class="blank"></P>
+        <div style="margin-right: 350px;margin-left: 350px">
+            <a class="btn btn-info center-block" href="{% url 'edit_profile' %}">edit profile</a>
+        </div>
+        <div class="row">
+            <div class="col-md-offset-2 col-md-4">
+                <h4>First name: {{ request.user.first_name }}</h4>
+                <h4>Tag: {{profile.tag}}</h4>
+                <h4>Short bio: {{profile.bio}}</h4>
+            </div>
+            <div class="col-md-offset-7">
+                <h4 >Last name: {{ request.user.last_name }}</h4>
+            </div>
+        </div>
+        <br>
+    </div>
+{% endblock %}

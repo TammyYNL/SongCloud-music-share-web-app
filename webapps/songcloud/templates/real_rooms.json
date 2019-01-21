@@ -1,0 +1,3 @@
+{
+  "real_rooms":[{% for real_room in real_rooms %}{%spaceless%}{% include 'real_room.json' %}{%endspaceless%}{% if not forloop.last %}, {% endif %}{% endfor %}]
+}

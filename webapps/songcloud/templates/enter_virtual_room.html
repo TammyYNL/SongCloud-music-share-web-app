@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% load static %}
+{% block js %}
+    <script src="{% static 'songcloud/js/map.js' %}"></script>
+    <script async defer
+  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD4jYavowAigT_V7dgLh1-qKTyXyTcdXS0&libraries=geometry">
+</script>
+{% endblock %}
+{% block content %}
+    <div id="container" class="col-md-7">
+        <ul class="nav nav-tabs" style="margin-left: 15px">
+            <li role="presentation" class="active"><a href="#">Virtual Room</a></li>
+            <li role="presentation"><a href="{% url 'real_room_enter' %}">Real Room</a></li>
+        </ul>
+        <div class="bg-grey round1" style="margin-top: -20px">
+            <h1 class="text-center">Enter Virtual Room</h1>
+            {% for error in errors %}
+            <p class="red">
+            {{error}}
+            </p>
+            {% endfor %}
+            <div class="row">
+                {% for room in rooms %}
+                <div class="col-md-6 col-lg-offset-3">
+                    <div id="real_room1" style="background-color: white">
+                        <div class="row" style="height: 50px">
+                            <div class="col-md-8 col-lg-offset-1">
+                                <h4 id="virtual-room-name+{{ room.id }}" name="virtual-room-name+{{ room.id }}" value="{{ room.name }}">{{ room.name }}</h4>
+                            </div>
+                            <div style="margin-top: 5px">
+                                <form action="{% url 'virtual_room' room.id %}" method="post">
+
+                                <button id="join-Button" class="btn btn-success center-block">
+                                    join
+                                </button>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-9 col-lg-offset-1">
+                                <label>tag</label>
+                                <output style="margin-top: -10px">{{ room.tag }}</output>
+                                <!--<label>current member</label>-->
+                                <!--<output style="margin-top: -10px">10/20</output>-->
+                                <label>Introduction</label>
+                                <output style="margin-top: -10px">{{ room.description }}</output>
+                                <br>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                </div>
+                {% endfor %}
+            </div>
+            <br>
+            <div>
+                <a href="#"><button class="center-block plus bg-BENIKABA" style="margin-top: 5px">
+                <span><i class="glyphicon glyphicon-refresh"></i></span>
+                </button></a>
+            </div>
+            <br>
+        </div>
+    </div>
+{% endblock %}

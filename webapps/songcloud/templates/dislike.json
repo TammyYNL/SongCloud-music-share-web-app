@@ -1,0 +1,5 @@
+{
+  "countdislike" : {{song.dislike}},
+  "countlike": {{song.like}},
+  "memberNum": {{memberNum}}
+}
